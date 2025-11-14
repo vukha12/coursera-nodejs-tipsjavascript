@@ -1,10 +1,11 @@
+import "dotenv/config";
+
 import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
 import compression from "compression";
-import dotenv from "dotenv";
+import router from "./routes/index.js";
 
-dotenv.config();
 const app = express();
 
 // init middlewares
@@ -16,10 +17,7 @@ app.use(compression());
 import mongoose from "./dbs/init.mongodb.js";
 
 // init routes
-app.get("/", (req, res) => {
-  const strCompress = "Hello Factipjs";
-  return res.status(200).json({ msg: "Welcome Fantipsjs" });
-});
+app.use("/", router);
 
 // handling error
 
