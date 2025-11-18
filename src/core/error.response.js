@@ -1,4 +1,5 @@
 "use strcit";
+import { StatusCodes, ReasonPhrases } from "../utils/httpStatusCode.js";
 
 const StatusCode = {
   FORBIDDEN: 403,
@@ -17,7 +18,7 @@ class ErrorResponse extends Error {
   }
 }
 
-export class ConflictRequestError extends ErrorResponse {
+class ConflictRequestError extends ErrorResponse {
   constructor(
     message = ReasonStatusCode.CONFLICT,
     statusCode = StatusCode.CONFLICT
@@ -26,7 +27,7 @@ export class ConflictRequestError extends ErrorResponse {
   }
 }
 
-export class BadRequestError extends ErrorResponse {
+class BadRequestError extends ErrorResponse {
   constructor(
     message = ReasonStatusCode.FORBIDDEN,
     statusCode = StatusCode.FORBIDDEN
@@ -34,3 +35,14 @@ export class BadRequestError extends ErrorResponse {
     super(message, statusCode);
   }
 }
+
+class AuthFailureError extends ErrorResponse {
+  constructor(
+    message = ReasonPhrases.UNAUTHORIZED,
+    statusCode = StatusCodes.UNAUTHORIZED
+  ) {
+    super(message, statusCode);
+  }
+}
+
+export { ConflictRequestError, BadRequestError, AuthFailureError };

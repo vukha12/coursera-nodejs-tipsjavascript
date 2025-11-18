@@ -26,7 +26,7 @@ const shopSchema = new Schema(
       enum: ["active", "inactive"],
       default: "inactive",
     },
-    verfidy: {
+    verfify: {
       type: Schema.Types.Boolean,
       default: false,
     },

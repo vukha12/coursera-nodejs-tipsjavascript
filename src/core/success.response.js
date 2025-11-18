@@ -44,4 +44,4 @@ class CREATED extends SuccessResponse {
     this.options = options;
   }
 }
-export { OK, CREATED };
+export { OK, CREATED, SuccessResponse };
