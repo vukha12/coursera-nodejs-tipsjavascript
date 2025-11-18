@@ -1,10 +1,11 @@
 "use strict";
 
 import express from "express";
-import AccessController from "../../controllers/access.controller.js";
+import accessController from "../../controllers/access.controller.js";
+import { asyncHandler } from "../../auth/checkAuth.js";
 const router = express.Router();
 
 // signUp
-router.post("/shop/signup", AccessController.signUp);
+router.post("/shop/signup", asyncHandler(accessController.signUp));
 
 export default router;
