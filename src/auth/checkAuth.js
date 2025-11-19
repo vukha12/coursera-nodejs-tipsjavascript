@@ -2,21 +2,23 @@
 
 import { findById } from "../services/apiKey.service.js";
 
+const HEADER = {
+  API_KEY: "x-api-key",
+};
+
 export const apiKey = async (req, res, next) => {
   try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-
-    if (!token) {
+    const key = req.headers[HEADER.API_KEY]?.toString();
+    if (!key) {
       return res.status(403).json({
         message: "Forbidden Error",
       });
     }
 
-    const objKey = await findById(token);
+    const objKey = await findById(key);
     if (!objKey) {
       return res.status(403).json({
-        message: "Forbidden Error",
+        message: "Forbidden Error obj",
       });
     }
 
@@ -41,11 +43,5 @@ export const permission = (permission) => {
       });
     }
     return next();
-  };
-};
-
-export const asyncHandler = (fn) => {
-  return (req, res, next) => {
-    fn(req, res, next).catch(next);
   };
 };

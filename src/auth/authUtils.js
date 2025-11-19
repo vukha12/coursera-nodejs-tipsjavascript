@@ -1,17 +1,25 @@
 "use strict";
 
 import jwt from "jsonwebtoken";
+import { asyncHandler } from "../helpers/asyncHandler.js";
+import { AuthFailureError, NotFoundError } from "../core/error.response.js";
+import KeyTokenService from "../services/keyToken.service.js";
 
 const EXPIRESIN_ACCESS_TOKEN = "2d";
 const EXPIRESIN_REFRESH_TOKEN = "7d";
 
+const HEADER = {
+  AUTHORIZATION: "authorization",
+  CLIENT_ID: "x-client-id",
+};
+
 export const createTokenPair = async (payload, publicKey, privateKey) => {
   try {
-    const accessToken = await jwt.sign(payload, publicKey, {
+    const accessToken = jwt.sign(payload, publicKey, {
       expiresIn: EXPIRESIN_ACCESS_TOKEN,
     });
 
-    const refreshToken = await jwt.sign(payload, privateKey, {
+    const refreshToken = jwt.sign(payload, privateKey, {
       expiresIn: EXPIRESIN_REFRESH_TOKEN,
     });
 
@@ -27,3 +35,41 @@ export const createTokenPair = async (payload, publicKey, privateKey) => {
     return error;
   }
 };
+
+export const authentication = asyncHandler(async (req, res, next) => {
+  /*
+      1 - Check userId missing?
+      2 - get accessToken
+      3 - verifyToken
+      4 - check user in bds?
+      5 - check keyStore with this userId?
+      6 - OK all => return next()
+   */
+  // 1
+  const userId = req.headers[HEADER.CLIENT_ID];
+  if (!userId) throw new AuthFailureError("Invalid Request");
+
+  // 2
+  const keyStore = await KeyTokenService.findByUserId(userId);
+  if (!keyStore) throw new NotFoundError("Not found KeyStore");
+
+  console.log("HEADERS:", req.headers);
+  // 3
+  const authHeader = req.headers[HEADER.AUTHORIZATION];
+  if (!authHeader) throw new NotFoundError("Missing Authorization header");
+
+  const accessToken = authHeader.split(" ")[1];
+  if (!accessToken) throw new NotFoundError("Invalid Request");
+
+  console.log(accessToken);
+  console.log(keyStore.publicKey);
+  try {
+    const decodeUser = jwt.verify(accessToken, keyStore.publicKey);
+    if (userId !== decodeUser.userId)
+      throw new AuthFailureError("Invalid Userid");
+    req.keyStore = keyStore;
+    return next();
+  } catch (error) {
+    throw error;
+  }
+});
