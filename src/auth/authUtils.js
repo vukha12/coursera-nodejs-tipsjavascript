@@ -13,7 +13,7 @@ const HEADER = {
   CLIENT_ID: "x-client-id",
 };
 
-export const createTokenPair = async (payload, publicKey, privateKey) => {
+const createTokenPair = async (payload, publicKey, privateKey) => {
   try {
     const accessToken = jwt.sign(payload, publicKey, {
       expiresIn: EXPIRESIN_ACCESS_TOKEN,
@@ -36,7 +36,7 @@ export const createTokenPair = async (payload, publicKey, privateKey) => {
   }
 };
 
-export const authentication = asyncHandler(async (req, res, next) => {
+const authentication = asyncHandler(async (req, res, next) => {
   /*
       1 - Check userId missing?
       2 - get accessToken
@@ -53,7 +53,7 @@ export const authentication = asyncHandler(async (req, res, next) => {
   const keyStore = await KeyTokenService.findByUserId(userId);
   if (!keyStore) throw new NotFoundError("Not found KeyStore");
 
-  console.log("HEADERS:", req.headers);
+  // console.log("HEADERS:", req.headers);
   // 3
   const authHeader = req.headers[HEADER.AUTHORIZATION];
   if (!authHeader) throw new NotFoundError("Missing Authorization header");
@@ -61,8 +61,6 @@ export const authentication = asyncHandler(async (req, res, next) => {
   const accessToken = authHeader.split(" ")[1];
   if (!accessToken) throw new NotFoundError("Invalid Request");
 
-  console.log(accessToken);
-  console.log(keyStore.publicKey);
   try {
     const decodeUser = jwt.verify(accessToken, keyStore.publicKey);
     if (userId !== decodeUser.userId)
@@ -73,3 +71,9 @@ export const authentication = asyncHandler(async (req, res, next) => {
     throw error;
   }
 });
+
+const verifyJWT = async (token, keySercet) => {
+  return jwt.verify(token, keySercet);
+};
+
+export { createTokenPair, authentication, verifyJWT };
