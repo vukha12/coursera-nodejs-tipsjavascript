@@ -1,6 +1,6 @@
 'use strict';
 
-import ProductService from "../services/product.service.js";
+import ProductService from "../services/product.service.xxx.js";
 import { SuccessResponse } from "../core/success.response.js";
 
 class ProductController {

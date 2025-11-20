@@ -44,7 +44,7 @@ const clothingSchema = new Schema(
   }
 );
 
-// define the product type = clothing
+// define the product type = electronic
 
 const electronicSchema = new Schema(
   {
@@ -59,12 +59,24 @@ const electronicSchema = new Schema(
   }
 );
 
-export const product = model(DOCUMET_NAME, productSchema);
-export const clothing = model("Clothing", clothingSchema);
-export const electronic = model("Electronic", electronicSchema);
+// define the product type = furniture
 
-export default {
-  product,
-  clothing,
-  electronic,
-};
+const furnitureSchema = new Schema(
+  {
+    manufacturer: { type: String, require: true },
+    model: String,
+    color: String,
+    product_shop: { type: Schema.Types.ObjectId, ref: "Shop" },
+  },
+  {
+    collection: "furnitures",
+    timeseries: true,
+  }
+);
+
+const product = model(DOCUMET_NAME, productSchema);
+const clothing = model("Clothing", clothingSchema);
+const electronic = model("Electronic", electronicSchema);
+const furniture = model("Furniture", furnitureSchema);
+
+export { product, clothing, electronic, furniture };

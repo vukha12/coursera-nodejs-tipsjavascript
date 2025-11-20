@@ -5,19 +5,21 @@ import { BadRequestError } from "../core/error.response.js";
 
 // define Factory class to create product
 class ProductFactory {
+
+    static productRegistry = {} // nơi chứa danh sách các loại sản phẩm 
+
+    static registerProductType(tyle, classRef) {
+        ProductFactory.productRegistry[tyle] = classRef;
+    }
+
     static async createProduct(type, payload) {
-        switch (type) {
-            case 'Clothing':
-                return new Clothing(payload).createProduct()
-            case 'Electronic':
-                return new Electronic(payload).createProduct()
-            case 'Furniture':
-                return new Furniture(payload).createProduct()
-            default:
-                throw new BadRequestError(`Invalid product type: ${type}`)
-        }
+        const productClass = ProductFactory.productRegistry[type];
+        if (!productClass) throw new BadRequestError(`Invalid product type: ${type}`)
+
+        return new productClass(payload).createProduct()
     }
 }
+
 
 // define base product class
 class Product {
@@ -91,5 +93,9 @@ class Furniture extends Product {
         return newProduct
     }
 }
+
+ProductFactory.registerProductType("Clothing", Clothing);
+ProductFactory.registerProductType("Electronic", Electronic);
+ProductFactory.registerProductType("Furniture", Furniture);
 
 export default ProductFactory;
