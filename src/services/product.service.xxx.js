@@ -8,9 +8,12 @@ import {
     findProduct,
     publishProductByShop,
     searchProductByUser,
-    unPublishProductByShop
+    unPublishProductByShop,
+    updateProductById
 } from "../models/repositories/product.repo.js";
 import { BadRequestError } from "../core/error.response.js";
+import { removeUndefinedObject, updateNestedObjectParer } from "../utils/index.js";
+
 
 // define Factory class to create product
 class ProductFactory {
@@ -28,11 +31,11 @@ class ProductFactory {
         return new productClass(payload).createProduct()
     }
 
-    static async updateProduct(type, payload) {
+    static async updateProduct(type, productId, payload) {
         const productClass = ProductFactory.productRegistry[type];
         if (!productClass) throw new BadRequestError(`Invalid product type: ${type}`)
 
-        return new productClass(payload).createProduct()
+        return new productClass(payload).updateProduct(productId)
     }
 
     // PUT //
@@ -94,6 +97,14 @@ class Product {
     async createProduct(product_id) {
         return await product.create({ ...this, _id: product_id })
     }
+
+    async updateProduct(productId, bodyUpdate) {
+        return await updateProductById({
+            productId,
+            bodyUpdate,
+            model: product
+        })
+    }
 }
 
 // Define sub-class for different product types Clothing
@@ -110,6 +121,24 @@ class Clothing extends Product {
         if (!newProduct) throw new BadRequestError("Create product failed")
 
         return newProduct
+    }
+
+    async updateProduct(productId) {
+
+        // console.log(`[1]--`, this)
+        const objectParams = removeUndefinedObject(this);
+        // console.log(`[2]--`, objectParams)
+
+        if (objectParams.product_attributes) {
+
+            await updateProductById({
+                productId,
+                bodyUpdate: updateNestedObjectParer(objectParams.product_attributes),
+                model: clothing
+            })
+        }
+        const updateProduct = await super.updateProduct(productId, updateNestedObjectParer(objectParams));
+        return updateProduct
     }
 }
 
