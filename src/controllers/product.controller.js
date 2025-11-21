@@ -13,6 +13,61 @@ class ProductController {
             })
         }).send(res);
     }
+
+    // PUT //
+    publishProductByShop = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Publish product success!",
+            metadata: await ProductService.publishProductByShop({
+                product_shop: req.user.userId,
+                product_id: req.params.id,
+            })
+        }).send(res);
+    }
+
+    unPublishProductByShop = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Un Publish product success!",
+            metadata: await ProductService.unPublishProductByShop({
+                product_shop: req.user.userId,
+                product_id: req.params.id,
+            })
+        }).send(res);
+    }
+    // END PUT //
+
+    // QUERY //
+    /**
+     * @desc Get all drafts for shop
+     * @param {Number} limit 
+     * @param {Number} skip 
+     * @returns {JSON} 
+     */
+    getAllDraftsForShop = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'Get list drafts for shop success!',
+            metadata: await ProductService.findAllDraftsForShop({
+                product_shop: req.user.userId,
+            })
+        }).send(res);
+    }
+
+    getAllPublishForShop = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'Get list publish for shop success!',
+            metadata: await ProductService.findAllPublishForShop({
+                product_shop: req.user.userId,
+            })
+        }).send(res);
+    }
+
+    getLishSearchProduct = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'Get list search product for shop success!',
+            metadata: await ProductService.searchProducts(req.params)
+        }).send(res);
+    }
+    // ENDQUERY //
 }
 
 export default new ProductController();
