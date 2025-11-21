@@ -3,7 +3,9 @@
 import { product, clothing, electronic, furniture } from "../models/product.model.js";
 import {
     findAllDraftsForShop,
+    findAllProducts,
     findAllPublishForShop,
+    findProduct,
     publishProductByShop,
     searchProductByUser,
     unPublishProductByShop
@@ -20,6 +22,13 @@ class ProductFactory {
     }
 
     static async createProduct(type, payload) {
+        const productClass = ProductFactory.productRegistry[type];
+        if (!productClass) throw new BadRequestError(`Invalid product type: ${type}`)
+
+        return new productClass(payload).createProduct()
+    }
+
+    static async updateProduct(type, payload) {
         const productClass = ProductFactory.productRegistry[type];
         if (!productClass) throw new BadRequestError(`Invalid product type: ${type}`)
 
@@ -52,6 +61,17 @@ class ProductFactory {
         return await searchProductByUser({ keySearch })
     }
 
+    static async findAllProducts(
+        { limit = 50, sort = 'ctime', page = 1, filter = { isPublish: true } }) {
+        return await findAllProducts({
+            limit, sort, page, filter,
+            select: ['product_name', 'product_price', 'product_thumb']
+        })
+    }
+
+    static async findProduct({ product_id }) {
+        return await findProduct({ product_id, unSelect: ['__v'] })
+    }
     // end query //
 }
 // define base product class

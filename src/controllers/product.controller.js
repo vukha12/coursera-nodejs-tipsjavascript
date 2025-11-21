@@ -43,7 +43,7 @@ class ProductController {
      * @param {Number} skip 
      * @returns {JSON} 
      */
-    getAllDraftsForShop = async (req, res, next) => {
+    findAllDraftsForShop = async (req, res, next) => {
         new SuccessResponse({
             message: 'Get list drafts for shop success!',
             metadata: await ProductService.findAllDraftsForShop({
@@ -52,7 +52,7 @@ class ProductController {
         }).send(res);
     }
 
-    getAllPublishForShop = async (req, res, next) => {
+    findAllPublishForShop = async (req, res, next) => {
         new SuccessResponse({
             message: 'Get list publish for shop success!',
             metadata: await ProductService.findAllPublishForShop({
@@ -61,13 +61,28 @@ class ProductController {
         }).send(res);
     }
 
-    getLishSearchProduct = async (req, res, next) => {
+    findLishSearchProduct = async (req, res, next) => {
         new SuccessResponse({
             message: 'Get list search product for shop success!',
             metadata: await ProductService.searchProducts(req.params)
         }).send(res);
     }
+
+    findAllProducts = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'Get list product success!',
+            metadata: await ProductService.findAllProducts(req.query)
+        }).send(res);
+    }
+
+    findProductById = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'Get product detail success!',
+            metadata: await ProductService.findProduct({ product_id: req.params.product_id })
+        }).send(res);
+    }
     // ENDQUERY //
+
 }
 
 export default new ProductController();
