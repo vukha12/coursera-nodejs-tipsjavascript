@@ -15,8 +15,8 @@ const discountSchema = new Schema(
         discount_start_date: { type: Date, required: true }, // ngay bat dau
         discount_end_date: { type: Date, required: true }, // ngay ket thuc
         discount_max_uses: { type: Number, required: true }, // so luong discount duoc ap dung
-        discount_uses_count: { type: Number, required: true }, // so discount da su dung
-        discount_users_used: { type: Array, default: [] }, // danh sach user da su dung
+        discount_uses_count: { type: Number, required: true }, // so luong discount đã được sử dụng
+        discount_users_used: { type: Array, default: [] }, // danh sách các user đã sử dụng mã này
         discount_max_uses_per_user: { type: Number, required: true }, // so luong cho phep toi da duoc su dung moi user
         discount_min_order_value: { type: Number, required: true }, // gia tri don hang toi thieu
         discount_shopId: { type: Schema.Types.ObjectId, ref: "Shop" },
