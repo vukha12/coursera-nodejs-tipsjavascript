@@ -33,7 +33,9 @@ const updateNestedObjectParer = obj => {
         final[`${k}.${a}`] = response[a]
       })
     } else {
-      final[k] = obj[k]
+      if (obj[k] != null) {
+        final[k] = obj[k]
+      }
     }
   })
   return final
