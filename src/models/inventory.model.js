@@ -3,7 +3,7 @@
 import { model, Schema } from "mongoose";
 
 const DOCUMET_NAME = "Inventory";
-const COLLECTION_NAME = "Inventories";
+const COLLECTION_NAME = "inventories";
 
 const inventorySchema = new Schema(
     {
