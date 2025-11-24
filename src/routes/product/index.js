@@ -13,7 +13,7 @@ router.get("/:product_id", asyncHandler(productController.findProductById));
 // authentication //
 router.use(authenticationV2);
 
-// create product
+// CRUD product
 router.post("", asyncHandler(productController.createProduct));
 router.patch("/:productId", asyncHandler(productController.updateProduct));
 router.put("/publish/:id", asyncHandler(productController.publishProductByShop));

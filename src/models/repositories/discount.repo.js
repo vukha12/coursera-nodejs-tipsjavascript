@@ -1,7 +1,6 @@
 'use strict';
 import discountModel from "../discount.model.js";
-import { BadRequestError, NotFoundError } from "../../core/error.response.js";
-import { findAllProducts } from "./product.repo.js";
+import { NotFoundError } from "../../core/error.response.js";
 import { getSelectData, unGetSelectData } from "../../utils/index.js";
 /*
     Discount Service
@@ -14,15 +13,18 @@ import { getSelectData, unGetSelectData } from "../../utils/index.js";
  */
 
 // Create discount code
-const createDiscount = async ({
-    code, start_date, end_date, is_active, shopId, type, min_order_value, users_used,
-    product_ids, max_uses_per_user, max_uses, name, description, value, uses_count, applies_to
-}) => {
+const createDiscount = async (payload) => {
+    const {
+        code, start_date, end_date, is_active, shopId,
+        min_order_value, product_ids, applies_to, name,
+        description, type, value, max_uses,
+        uses_count, max_uses_per_user, users_used
+    } = payload;
     return await discountModel.create({
         discount_name: name,
         discount_description: description,
         discount_type: type,
-        description_value: value,
+        discount_value: value,
         discount_code: code,
         discount_start_date: new Date(start_date),
         discount_end_date: new Date(end_date),
@@ -38,60 +40,9 @@ const createDiscount = async ({
     })
 }
 
-// Lấy tất cả các vouchoure 
-const getAllDiscountCodeWithProduct = async ({ code, shopId, limit, page }) => {
-    // create index for discount_code
-    const discount = findDiscount({ code, shopId });
-
-    if (!discount && !discount.discount_is_active) {
-        throw new NotFoundError('Discount not exists!');
-    }
-
-    const { discount_applies_to, discount_product_ids } = discount
-    let products
-    if (discount_applies_to === 'all') {
-        // get all product
-        products = await findAllProducts({
-            filter: {
-                product_shop: shopId,
-                isPublish: true
-            },
-            limit: +limit,
-            page: +page,
-            sort: 'ctime',
-            select: ['product_name']
-        })
-    }
-
-    if (discount_applies_to === 'specific') {
-        // get specific product
-        products = await findAllProducts({
-            filter: {
-                _id: { $in: discount_product_ids },
-                isPublish: true
-            },
-            limit: +limit,
-            page: +page,
-            sort: 'ctime',
-            select: ['product_name']
-        })
-    }
-
-    return products
-}
-
-// Lấy tất cả các vouchoure của shop
-const getAllDiscountCodesByShop = async ({ limit, page, shopId }) => {
-    const discounts = await findAllDiscountCodesUnSelect({
-        limit: +limit,
-        page: +page,
-        filter: {
-            discount_shopId: shopId,
-            discount_is_active: true
-        },
-        unSelect: ['__v', 'discount_shopId']
-    })
-    return discounts
+// Delete discount
+const finddeleteDiscount = async (filter) => {
+    return await discountModel.findOneAndDelete(filter)
 }
 
 // Find all discount code Un Select
@@ -100,18 +51,16 @@ const findAllDiscountCodesUnSelect = async ({
     page = 1,
     sort = 'ctime',
     filter,
-    unSelect,
+    select,
 }) => {
     const skip = (page - 1) * limit;
     const sortBy = sort === 'ctime' ? { _id: -1 } : { _id: 1 }
-    const result = discountModel.find(filter)
+    return await discountModel.find(filter)
         .sort(sortBy)
         .skip(skip)
         .limit(limit)
-        .select(unGetSelectData(unSelect))
+        .select(getSelectData(select))
         .lean()
-
-    return result
 }
 
 // // Find all discount code Select
@@ -134,18 +83,34 @@ const findAllDiscountCodesSelect = async ({
     return result
 }
 
-
 // Find discount code
-const findDiscount = async ({ code, shopId }) => {
-    return await discountModel.findOne({
-        discount_code: code,
-        discount_shopId: shopId,
-    }).lean();
+const findDiscount = async (filter) => {
+    return await discountModel.findOne(filter).lean();
+}
+
+// huỷ chiết khấu
+const cancelDiscountCode = async ({ codeId, shopId, userId }) => {
+    const foundDiscount = await findDiscount({
+        discount_code: codeId,
+        discount_shopId: shopId
+    })
+
+    if (!foundDiscount) throw new NotFoundError(`discount doesn't exitst`)
+
+    const result = await discountModel.findByIdAndUpdate(foundDiscount._id, {
+        $pull: { discount_users_used: userId },
+        $inc: {
+            discount_max_uses: 1,
+            discount_uses_count: -1
+        }
+    })
+    return result
 }
 
 export {
     findDiscount,
     createDiscount,
-    getAllDiscountCodeWithProduct,
-    getAllDiscountCodesByShop
+    finddeleteDiscount,
+    findAllDiscountCodesUnSelect,
+    cancelDiscountCode
 }
