@@ -1,10 +1,13 @@
 'use strict';
 
-import { createUserCart, findUserCart, updateUserCartQuantity } from "../models/repositories/cart.repo.js";
+import { createUserCart, deleteItemProductInCart, findUserCart, getUserCart, updateUserCartQuantity } from "../models/repositories/cart.repo.js";
+import { getProductById } from "../models/repositories/product.repo.js";
+import { NotFoundError } from '../core/error.response.js'
 
 class CartService {
 
-    static async addTocart({ userId, product = {} }) {
+    // create cart
+    static async addToCart({ userId, product = {} }) {
 
         // tìm giỏ hàng đã tồn tại hay chưa
         const userCart = await findUserCart(userId);
@@ -19,9 +22,66 @@ class CartService {
             userCart.cart_products = [product];
             return await userCart.save();
         }
+        const hasProduct = userCart.cart_products.find(p => p.productId === product.productId);
 
-        // giỏ hàng tồn tại, và có sản phầm này thì update quantity
-        return await updateUserCartQuantity({ userId, product })
+        if (hasProduct) {
+            // TRƯỜNG HỢP A: Sản phẩm ĐÃ CÓ -> Tăng số lượng (Dùng hàm có $)
+            return await updateUserCartQuantity({ userId, product });
+        }
+
+        return await createUserCart({ userId, product })
+    }
+
+    // update cart
+    /*
+        "shop_order_ids":[
+            {
+                "shopId",
+                "item_products":[
+                {
+                    "quantity",
+                    "price",
+                    "shopId",
+                    "old_quantity",
+                    "productId"
+                }
+                ],
+                version
+            }
+        ]
+    */
+    static async addToCartV2({ userId, shop_order_ids }) {
+        const { productId, quantity, old_quantity } = shop_order_ids[0]?.item_products[0]
+        // check product
+        const foundProduct = await getProductById(productId)
+        if (!foundProduct) throw new NotFoundError('Fail product');
+        // compare
+        if (foundProduct.product_shop.toString() !== shop_order_ids[0]?.shopId) {
+            throw new NotFoundError("Product do not belong to the shop")
+        }
+
+        if (quantity === 0) {
+            return await deleteItemProductInCart({ userId, productId });
+        }
+
+        return await updateUserCartQuantity({
+            userId, product: {
+                productId,
+                quantity: quantity - old_quantity
+            }
+        })
+    }
+
+    static async deleteItemProductInCart({ userId, productId }) {
+        return await deleteItemProductInCart({ userId, productId });
+    }
+
+
+    // lấy danh sách giỏ hàng user
+    static async getListUserCart({ userId }) {
+        console.log("Gia tri userId nhan duoc::", userId);
+        console.log("Kieu du lieu::", typeof userId);
+        return await getUserCart({ userId });
     }
 }
 

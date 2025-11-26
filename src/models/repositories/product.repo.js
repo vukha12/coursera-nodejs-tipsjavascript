@@ -92,6 +92,10 @@ const queryProduct = async ({ query, limit, skip }) => {
         .exec()
 }
 
+const getProductById = async (productId) => {
+    return await product.findOne({ _id: productId });
+}
+
 export {
     findAllDraftsForShop,
     findAllPublishForShop,
@@ -100,5 +104,6 @@ export {
     searchProductByUser,
     findAllProducts,
     findProduct,
-    updateProductById
+    updateProductById,
+    getProductById
 }

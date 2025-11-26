@@ -1,11 +1,10 @@
 'use strict';
 
-import { use } from "react";
-import cartModel from "../cart.model";
+import cartModel from "../cart.model.js";
 
 // tìm giỏ hàng
 const findUserCart = async (userId) => {
-    return cartModel.findOne({ cart_userId: userId })
+    return cartModel.findOne({ cart_userId: userId });
 }
 
 // tạo giỏ hàng 
@@ -39,8 +38,29 @@ const updateUserCartQuantity = async ({ userId, product }) => {
     return cartModel.findOneAndUpdate(query, updateSet, option)
 }
 
+// delete cart
+const deleteItemProductInCart = async ({ userId, productId }) => {
+    const query = { cart_userId: userId, cart_state: 'active' }
+    const updateSet = {
+        $pull: {
+            cart_products: {
+                productId
+            }
+        }
+    }
+
+    return cartModel.updateOne(query, updateSet);
+}
+
+// get list cart
+const getUserCart = async ({ userId }) => {
+    return cartModel.findOne({ cart_userId: +userId }).lean();
+}
+
 export {
     findUserCart,
     createUserCart,
-    updateUserCartQuantity
+    updateUserCartQuantity,
+    deleteItemProductInCart,
+    getUserCart
 }
