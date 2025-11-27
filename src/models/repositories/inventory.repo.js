@@ -1,7 +1,7 @@
 
 import inventory from "../inventory.model.js";
 
-export const insertInventory = async ({
+const insertInventory = async ({
     productId, shopId, stock, location = 'unKnow'
 }) => {
     return await inventory.create({
@@ -12,3 +12,30 @@ export const insertInventory = async ({
     })
 }
 
+const reservationInventory = async ({ productId, quantity, cartId }) => {
+    const query = {
+        inven_productId: productId,
+        inven_stock: { $gte: quantity }
+    }
+    const updateSet = {
+        $inc: {
+            inven_stock: -quantity
+        },
+        $push: {
+            inven_reservations: {
+                quantity,
+                cartId,
+                createdOn: new Date()
+            }
+        }
+    }
+    // const options = { upsert: true, new: true }
+
+    return await inventory.updateOne(query, updateSet)
+}
+
+
+export {
+    insertInventory,
+    reservationInventory
+}
