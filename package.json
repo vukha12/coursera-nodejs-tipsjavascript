@@ -1,0 +1,39 @@
+{
+  "name": "5-coursera-tips-javascript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --watch server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vukha12/coursera-nodejs-tipsjavascript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/vukha12/coursera-nodejs-tipsjavascript/issues"
+  },
+  "homepage": "https://github.com/vukha12/coursera-nodejs-tipsjavascript#readme",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "nodemon": "^3.1.11",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {
+    "bcrypt": "^6.0.0",
+    "compression": "^1.8.1",
+    "dotenv": "^17.2.3",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.19.3",
+    "morgan": "^1.10.1"
+  }
+}
