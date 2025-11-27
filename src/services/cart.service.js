@@ -79,8 +79,6 @@ class CartService {
 
     // lấy danh sách giỏ hàng user
     static async getListUserCart({ userId }) {
-        console.log("Gia tri userId nhan duoc::", userId);
-        console.log("Kieu du lieu::", typeof userId);
         return await getUserCart({ userId });
     }
 }

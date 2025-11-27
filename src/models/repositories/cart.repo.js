@@ -7,6 +7,10 @@ const findUserCart = async (userId) => {
     return cartModel.findOne({ cart_userId: userId });
 }
 
+const findCartById = async (cartId) => {
+    return await cartModel.findById(cartId).lean();
+}
+
 // tạo giỏ hàng 
 const createUserCart = async ({ userId, product }) => {
     const query = { cart_userId: userId, cart_state: 'active' };
@@ -62,5 +66,6 @@ export {
     createUserCart,
     updateUserCartQuantity,
     deleteItemProductInCart,
-    getUserCart
+    getUserCart,
+    findCartById
 }

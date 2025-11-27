@@ -44,7 +44,6 @@ const getDiscountAmount = async ({ codeId, userId, shopId, products }) => {
 
     if (!foundDiscount) throw new NotFoundError('Disscount does not exitst')
 
-    console.log(`[1]::`, foundDiscount)
     const {
         discount_is_active,
         discount_max_uses,

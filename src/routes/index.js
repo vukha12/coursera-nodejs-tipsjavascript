@@ -4,6 +4,7 @@ import express from "express";
 import accessRouter from "./access/index.js";
 import productRouter from "./product/index.js";
 import discountRouter from "./discount/index.js";
+import checkoutRouter from "./checkout/index.js";
 import cartRouter from "./cart/index.js";
 
 
@@ -17,6 +18,7 @@ router.use(apiKey);
 // check permission
 router.use(permission("0000"));
 
+router.use("/v1/api/checkout", checkoutRouter);
 router.use("/v1/api/discount", discountRouter);
 router.use("/v1/api/cart", cartRouter);
 router.use("/v1/api/product", productRouter);
