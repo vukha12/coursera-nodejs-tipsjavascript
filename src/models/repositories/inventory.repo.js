@@ -1,6 +1,7 @@
 
 import inventory from "../inventory.model.js";
 
+// tạo kho khi 
 const insertInventory = async ({
     productId, shopId, stock, location = 'unKnow'
 }) => {
@@ -12,6 +13,7 @@ const insertInventory = async ({
     })
 }
 
+//
 const reservationInventory = async ({ productId, quantity, cartId }) => {
     const query = {
         inven_productId: productId,
@@ -34,8 +36,22 @@ const reservationInventory = async ({ productId, quantity, cartId }) => {
     return await inventory.updateOne(query, updateSet)
 }
 
+// 
+const addStockToInventory = async ({ stock, productId, shopId, location }) => {
+    const query = { inven_shopId: shopId, inven_productId: productId }
+    const updateSet = {
+        $inc: { inven_stock: stock },
+        $set: {
+            inven_location: location
+        }
+    }
+    const option = { upsert: true, new: true }
+
+    return await inventoryModel.findOneAndUpdate(query, updateSet, option)
+}
 
 export {
     insertInventory,
-    reservationInventory
+    reservationInventory,
+    addStockToInventory
 }

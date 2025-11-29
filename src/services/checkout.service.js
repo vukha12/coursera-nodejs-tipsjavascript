@@ -113,7 +113,7 @@ class CheckoutService {
         shop_order_ids,
         cartId,
         userId,
-        user_addpress = {},
+        user_address = {},
         user_payment = {}
     }) {
         const { shop_order_ids_new, checkout_order } = await this.checkoutReview({
@@ -140,7 +140,30 @@ class CheckoutService {
         if (acquireProduct.includes(false)) {
             throw new BadRequestError("Một số sản phẩm đã được cập nhật, vui lòng quay lại giỏ hàng!")
         }
+        const orderPayload = {
+            userId,
+            checkout_order,
+            user_address,
+            user_payment,
+            shop_order_ids_new
+        }
+
+        const newOrder = await createOrderUser(orderPayload)
+        if (newOrder) {
+            // remove product in cart
+        }
+
+        return newOrder;
     }
+
+    static async getOrdersByUser() { }
+
+    static async getOneOrderByUser() { }
+
+    static async cancelOrderByUser() { }
+
+    static async updateOrderStatusByShop() { }
+
 
 }
 
