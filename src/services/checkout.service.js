@@ -4,6 +4,7 @@ import { findCartById, findUserCart } from "../models/repositories/cart.repo.js"
 import { BadRequestError, NotFoundError } from "../core/error.response.js";
 import { checkProductByServer } from "../models/repositories/product.repo.js";
 import { getDiscountAmount } from "./discount.service.js";
+import { acquireLock, releaseLock } from "./redis.service.js";
 
 class CheckoutService {
     // login and without login
@@ -106,6 +107,63 @@ class CheckoutService {
             checkout_order
         }
     }
+
+    // order
+    static async orderByUser({
+        shop_order_ids,
+        cartId,
+        userId,
+        user_address = {},
+        user_payment = {}
+    }) {
+        const { shop_order_ids_new, checkout_order } = await this.checkoutReview({
+            cartId,
+            userId,
+            shop_order_ids
+        })
+
+        // check lại một lần nữa xem vượt tồn kho hay không?
+        // get new array Products
+        const products = shop_order_ids_new.flatMap(order => order.item_products)
+        console.log(`[1]::`, products)
+        const acquireProduct = []
+        for (let i = 0; i < products.length; i++) {
+            const { productId, quantity } = products[i];
+            const keyLock = await acquireLock(productId, quantity, cartId)
+            acquireLock.push(keyLock ? true : false)
+            if (keyLock) {
+                await releaseLock(keyLock)
+            }
+        }
+
+        // check
+        if (acquireProduct.includes(false)) {
+            throw new BadRequestError("Một số sản phẩm đã được cập nhật, vui lòng quay lại giỏ hàng!")
+        }
+        const orderPayload = {
+            userId,
+            checkout_order,
+            user_address,
+            user_payment,
+            shop_order_ids_new
+        }
+
+        const newOrder = await createOrderUser(orderPayload)
+        if (newOrder) {
+            // remove product in cart
+        }
+
+        return newOrder;
+    }
+
+    static async getOrdersByUser() { }
+
+    static async getOneOrderByUser() { }
+
+    static async cancelOrderByUser() { }
+
+    static async updateOrderStatusByShop() { }
+
 
 }
 
