@@ -1,0 +1,30 @@
+1. Tại sao lại sử dụng redis?
+    - Hiệu xuất cao
+    - Tính đồng thời cao
+    - 
+
+2. Các kiểu dữ liệu trong redis:
+    - String : 
+    - Hash :
+    - List : 
+
+
+
+3. Các phương thức basic redis:
+    - SET, GET : gán và lấy dữ liệu
+    - MSET, MGET : gán và lấy dữ liệu nhưng nhiều hơn
+    - INCR : tăng giá trị lên 1 || INCRBY : tăng giá tri lên bao nhiu tuỳ thích
+    - DECR: giảm giá trị xuống 1 || DECRBY : giảm giá tri xuống bao nhiu do mình
+    - EX (Expire) : hết hạn || PX (Precise Expire) : hết hạn chính xác (TTL)
+    - NX (Not Exists) : chưa tồn tại || XX (Exists) : đã tồn tại
+
+4. Hash: 
+    - là một tập hợp các cặp key:value có thể lưu nhiều trường và dữ liệu khác nhau
+    - hset, hget, hmset, hmget,
+
+5. List:
+    - giống array
+    - lpush, rpush, lrange, linsert, llen, lpop, rpop, lset, 
+    lrem (xoá phần tử theo giá trị),
+    ltrim (giữa lại phần tử trong khoảng, xoá phần còn lại),
+    l

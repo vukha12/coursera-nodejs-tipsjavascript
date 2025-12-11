@@ -1,7 +1,6 @@
 "use strict"
 
-import inventoryModel from "../models/inventory.model.js"
-import { getProductById } from "../models/repositories/product.repo"
+import { getProductById } from "../models/repositories/product.repo.js"
 import { BadRequestError } from "../core/error.response.js"
 import { addStockToInventory } from "../models/repositories/inventory.repo.js"
 
