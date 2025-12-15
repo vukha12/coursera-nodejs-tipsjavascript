@@ -5,6 +5,8 @@ import morgan from "morgan";
 import helmet from "helmet";
 import compression from "compression";
 import router from "./routes/index.js";
+import inventoryTest from "./test/inventory.test.js";
+import productTest from "./test/product.test.js";
 
 const app = express();
 
@@ -19,8 +21,11 @@ app.use(
   })
 );
 
+// test pub/sub redis
+productTest.purchaseProduct('product:001', 10);
+
 // init db
-import mongoose from "./dbs/init.mongodb.js";
+// import mongoose from "./dbs/init.mongodb.js";
 
 // init routes
 app.use("/", router);

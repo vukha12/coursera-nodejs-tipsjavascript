@@ -10,7 +10,7 @@
 
 
 
-3. Các phương thức basic redis:
+3. String:
     - SET, GET : gán và lấy dữ liệu
     - MSET, MGET : gán và lấy dữ liệu nhưng nhiều hơn
     - INCR : tăng giá trị lên 1 || INCRBY : tăng giá tri lên bao nhiu tuỳ thích
@@ -27,4 +27,21 @@
     - lpush, rpush, lrange, linsert, llen, lpop, rpop, lset, 
     lrem (xoá phần tử theo giá trị),
     ltrim (giữa lại phần tử trong khoảng, xoá phần còn lại),
-    l
+    
+6. Set:
+    -sadd, scard(trả về số lượng phần tử), smembers(lấy tất cả phần tử), srem(xoá phần tử)
+    -srandmember, sinter(trả về giá trị cùng nhau), sdiff (trả về giá trị khác nhau)
+    -
+
+7. Zset: 
+    - zadd, zrange, zrank, zscore, zincrby  
+
+8. Transaction:
+    - là tập hộp của các lệnh 1 là thành công 2 là thất bại(trường hợp lỗi cú pháp)
+    - không đảm bảo tính nguyên tử
+    - cô lập, không có lệnh nào từ client khác có thể chen ngang
+    - tuần tự hoá
+    - wath | multi | exec | discard 
+
+9. Pub/Sub:
+    - 
