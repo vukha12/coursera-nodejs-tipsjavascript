@@ -25,7 +25,7 @@ app.use(
 productTest.purchaseProduct('product:001', 10);
 
 // init db
-// import mongoose from "./dbs/init.mongodb.js";
+import mongoose from "./dbs/init.mongodb.js";
 
 // init routes
 app.use("/", router);
