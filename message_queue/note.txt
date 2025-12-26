@@ -1,0 +1,6 @@
+1. Notification System:
+    - push (rabbitmq): nhận động, cứ có thông báo mới là nó sẽ nhận lun thông báo
+    - pull (kafka): chủ động lấy, có thông báo mới thì phải xử lý lấy thông báo
+
+2. Message Queue: 
+    - 
