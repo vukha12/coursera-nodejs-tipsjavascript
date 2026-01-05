@@ -8,6 +8,7 @@ import checkoutRouter from "./checkout/index.js";
 import inventoryRouter from "./inventory/index.js";
 import cartRouter from "./cart/index.js";
 import commentRouter from "./comment/index.js"
+import notification from "./noti/index.js";
 import { apiKey, permission } from "../auth/checkAuth.js";
 import { pushToLogDiscord } from "../middlewares/index.js";
 
@@ -28,6 +29,7 @@ router.use("/v1/api/inventory", inventoryRouter);
 router.use("/v1/api/cart", cartRouter);
 router.use("/v1/api/product", productRouter);
 router.use("/v1/api/comment", commentRouter)
+router.use("/v1/api/noti", notification)
 router.use("/v1/api", accessRouter);
 
 

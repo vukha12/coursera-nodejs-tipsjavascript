@@ -14,6 +14,7 @@ import {
 import { BadRequestError } from "../core/error.response.js";
 import { removeUndefinedObject, updateNestedObjectParer } from "../utils/index.js";
 import { insertInventory } from "../models/repositories/inventory.repo.js";
+import { pushNotificationSystem } from "./notification.service.js";
 
 
 // define Factory class to create product
@@ -103,6 +104,18 @@ class Product {
                 shopId: this.product_shop,
                 stock: this.product_quantity
             })
+
+            // push noti to system collection
+            pushNotificationSystem({
+                type: 'SHOP-001',
+                receiverId: 1,
+                senderId: this.product_shop,
+                options: {
+                    product_name: this.product_name,
+                    shop_name: this.product_shop
+                }
+            }).then(rs => console.log(rs))
+                .catch(err => console.log(err))
         }
 
         return newProduct;
