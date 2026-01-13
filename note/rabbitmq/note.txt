@@ -1,0 +1,9 @@
+Process handle message error or ttl (time to live)
+- step 1: push 1 cái notification vào exchange1
+- step 2: Exchange1 đẩy vào queue1
+- step 3: System send notification user lấy queue1 ra (first in - first out)
+- step 4: process logic system nếu ( true thì success, fail thì đẩy vào Exchange2 )
+- step 5: Xử lý xong nếu true thì thông báo success
+- step 6: Nếu fail thì đưa vào Exchane2
+- step 7: Exchange2 đẩy vào queue2
+- step 8: Và system send notification user á xử lý tiếp cái queue2 tối đa 3-4 gì đó, true thì thành công fail thì bỏ lun
