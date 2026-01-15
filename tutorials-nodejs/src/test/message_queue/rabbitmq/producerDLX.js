@@ -3,11 +3,11 @@
 import amqp from "amqplib";
 const URL_RABBITMQ = "amqp://guest:12345@localhost";
 
-const log = console.log
+// const log = console.log
 
-console.log = function () {
-    log.apply(console, [new Date()].concat(arguments))
-}
+// console.log = function () {
+//     log.apply(console, [new Date()].concat(arguments))
+// }
 
 const runProducerDLX = async () => {
     try {

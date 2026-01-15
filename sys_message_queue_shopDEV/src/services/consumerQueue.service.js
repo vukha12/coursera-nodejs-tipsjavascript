@@ -5,11 +5,11 @@ const {
     connectToRabbitMQ
 } = require("../dbs/init.rabbit")
 
-const log = console.log
+// const log = console.log
 
-console.log = function () {
-    log.apply(console, [new Date()].concat(arguments))
-}
+// console.log = function () {
+//     log.apply(console, [new Date()].concat(arguments))
+// }
 
 const messageService = {
     consumerQueue: async (queueName) => {
@@ -50,11 +50,10 @@ const messageService = {
                     console.log(`SEND notificationQueue successfully processed: `, msg.content.toString())
                     channel.ack(msg);
                 } catch (error) {
-                    console.error(`SEND notification error`, error);
+                    // console.error(`SEND notification error`, error);
                     channel.nack(msg, false, false);
                     /*
                         nack: negative acknowledgement
-
                     */
                 }
 
