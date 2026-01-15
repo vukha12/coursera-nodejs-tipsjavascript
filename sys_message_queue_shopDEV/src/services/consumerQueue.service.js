@@ -28,14 +28,37 @@ const messageService = {
 
             const notiQueue = 'noti.queue';
 
-            const timeExpried = 15000
-            setTimeout(() => {
-                channel.consume(notiQueue, msg => {
-                    console.log(`Send notificationQueue successfully processed::`, msg.content.toString())
-                    channel.ack(msg);
-                })
-            }, timeExpried)
+            // 1. TTL
+            // const timeExpried = 15000
+            // setTimeout(() => {
+            //     channel.consume(notiQueue, msg => {
+            //         console.log(`Send notificationQueue successfully processed::`, msg.content.toString())
+            //         channel.ack(msg);
+            //     })
+            // }, timeExpried)
 
+
+            // 2. LOGIC
+            channel.consume(notiQueue, msg => {
+                try {
+                    const numberTest = Math.random();
+                    console.log(numberTest);
+                    if (numberTest < 0.8) {
+                        throw new Error('Send notification failed:: HOT FIX')
+                    }
+
+                    console.log(`SEND notificationQueue successfully processed: `, msg.content.toString())
+                    channel.ack(msg);
+                } catch (error) {
+                    console.error(`SEND notification error`, error);
+                    channel.nack(msg, false, false);
+                    /*
+                        nack: negative acknowledgement
+
+                    */
+                }
+
+            })
         } catch (error) {
             console.error(error)
         }
