@@ -1,0 +1,29 @@
+'use strict';
+
+import { BadRequestError } from "../core/error.response.js";
+import { SuccessResponse } from "../core/success.response.js";
+import uploadImage from "../services/upload.service.js";
+
+class UploadController {
+    async uploadFile(req, res, next) {
+        new SuccessResponse({
+            message: 'Upload file successfully!',
+            metadata: await uploadImage.uploadImageFromUrl()
+        }).send(res);
+    }
+
+    async uploadFileThumb(req, res, next) {
+        const { file } = req;
+        if (!file) {
+            throw new BadRequestError('File missing');
+        }
+        new SuccessResponse({
+            message: 'Upload file local successfully!',
+            metadata: await uploadImage.uploadImageFromLocal({
+                path: file.path
+            })
+        }).send(res);
+    }
+}
+
+export default new UploadController();

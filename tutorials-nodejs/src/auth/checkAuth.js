@@ -24,7 +24,7 @@ export const apiKey = async (req, res, next) => {
 
     req.objKey = objKey;
     return next();
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const permission = (permission) => {
