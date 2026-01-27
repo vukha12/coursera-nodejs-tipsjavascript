@@ -41,4 +41,41 @@ const uploadImageFromLocal = async ({ path, folderName = 'product/8409' }) => {
         console.error(`Error uploading image::`, error.mesagge)
     }
 }
-export default { uploadImageFromUrl, uploadImageFromLocal };
+
+// 3. upload from image local
+const uploadImageFromLocalFiles = async ({
+    files, folderName = 'product/8409'
+}) => {
+    try {
+        console.log(`files::`, files, folderName);
+        if (!files.length) return;
+
+        const uploadedUrls = [];
+
+        for (const file of files) {
+            const result = await cloudinary.uploader.upload(file.path, {
+                folder: folderName
+            })
+
+            uploadedUrls.push({
+                image_url: result.secure_url,
+                shopId: '8409',
+                thumb_url: await cloudinary.url(result.public_id, {
+                    height: 100,
+                    width: 100,
+                    format: 'jpg'
+                })
+            });
+        }
+
+        return uploadedUrls;
+    } catch (error) {
+        console.error(`Error uploading image::`, error.message);
+    }
+}
+
+export default {
+    uploadImageFromUrl,
+    uploadImageFromLocal,
+    uploadImageFromLocalFiles
+};

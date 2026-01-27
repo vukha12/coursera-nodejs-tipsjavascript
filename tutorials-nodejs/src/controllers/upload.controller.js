@@ -24,6 +24,20 @@ class UploadController {
             })
         }).send(res);
     }
+
+    async uploadImageFromLocalFiles(req, res, next) {
+        const { files } = req;
+        if (!files.length) {
+            throw new BadRequestError('File missing');
+        }
+        new SuccessResponse({
+            message: 'Upload file local successfully!',
+            metadata: await uploadImage.uploadImageFromLocalFiles({
+                files,
+                ...req.body
+            })
+        }).send(res);
+    }
 }
 
 export default new UploadController();
