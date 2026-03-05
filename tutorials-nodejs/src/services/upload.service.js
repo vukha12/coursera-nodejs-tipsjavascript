@@ -1,25 +1,38 @@
 'use strict';
 
 import cloudinary from "../configs/cloudinary.config.js";
-import { s3, PutObjectCommand } from '../configs/s3.config.js';
+import { s3, PutObjectCommand, GetObjectCommand, DeleteBucketCommand } from '../configs/s3.config.js';
 import crypto from "crypto";
+
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 // 4. upload from s3 
+
+const randomNameImage = () => crypto.randomBytes(16).toString('hex')
+
 const uploadImageFromLocalS3 = async ({
     file
 }) => {
     try {
-        const randomNameImage = () => crypto.randomBytes(16).toString('hex')
+        const imageName = randomNameImage();
         const command = new PutObjectCommand({
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: randomNameImage(), // file.originalname || 'unknown',
+            Key: imageName, // file.originalname || 'unknown',
             Body: file.buffer,
             ContentType: 'image/jpeg' // that is what you need?
         })
 
+        // export url
         const result = await s3.send(command)
-        console.log(result)
+        console.log(`result::::`, result)
 
-        return result
+        const signedUrl = new GetObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: imageName
+        })
+        const url = await getSignedUrl(s3, signedUrl, { expiresIn: 3600 })
+        console.log(`url::::`, url)
+
+        return url
         // return {
         //     image_null: result.secure_url,
         //     shopId: 8409,

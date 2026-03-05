@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@aws-sdk/s3-request-presigner": "^3.1002.0",
     "crypto": "^1.0.1"
   }
 }
