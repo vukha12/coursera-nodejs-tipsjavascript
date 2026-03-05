@@ -1,6 +1,38 @@
 'use strict';
 
 import cloudinary from "../configs/cloudinary.config.js";
+import { s3, PutObjectCommand } from '../configs/s3.config.js';
+import crypto from "crypto";
+// 4. upload from s3 
+const uploadImageFromLocalS3 = async ({
+    file
+}) => {
+    try {
+        const randomNameImage = () => crypto.randomBytes(16).toString('hex')
+        const command = new PutObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: randomNameImage(), // file.originalname || 'unknown',
+            Body: file.buffer,
+            ContentType: 'image/jpeg' // that is what you need?
+        })
+
+        const result = await s3.send(command)
+        console.log(result)
+
+        return result
+        // return {
+        //     image_null: result.secure_url,
+        //     shopId: 8409,
+        //     thumb_url: await cloudinary.url(result.public_id, {
+        //         height: 100,
+        //         width: 100,
+        //         format: 'jpg'
+        //     })
+        // }
+    } catch (error) {
+        console.error(`Error uploading image use S3Client:::`, error.message);
+    }
+}
 
 // 1. upload from url image
 const uploadImageFromUrl = async () => {
@@ -77,5 +109,6 @@ const uploadImageFromLocalFiles = async ({
 export default {
     uploadImageFromUrl,
     uploadImageFromLocal,
-    uploadImageFromLocalFiles
+    uploadImageFromLocalFiles,
+    uploadImageFromLocalS3
 };

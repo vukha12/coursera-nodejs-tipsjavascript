@@ -38,6 +38,20 @@ class UploadController {
             })
         }).send(res);
     }
+
+    // upload file local S3Client
+    async uploadImageFromLocalS3(req, res, next) {
+        const { file } = req;
+        if (!file) {
+            throw new BadRequestError('File missing');
+        }
+        new SuccessResponse({
+            message: 'Upload file local successfully!',
+            metadata: await uploadImage.uploadImageFromLocalS3({
+                file
+            })
+        }).send(res);
+    }
 }
 
 export default new UploadController();
