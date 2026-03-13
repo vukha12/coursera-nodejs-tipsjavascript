@@ -3,11 +3,15 @@
 import cloudinary from "../configs/cloudinary.config.js";
 import { s3, PutObjectCommand, GetObjectCommand, DeleteBucketCommand } from '../configs/s3.config.js';
 import crypto from "crypto";
+import { getSignedUrl } from "@aws-sdk/cloudfront-signer"
 
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 // 4. upload from s3 
-
 const randomNameImage = () => crypto.randomBytes(16).toString('hex')
+const urlImagePublic = `https://d1a08hh88dwb6o.cloudfront.net`;
+const {
+    AWS_BUCKET_NAME,
+    AWS_BUCKET_CLOUNDFRONT_PRIVATE_KEY,
+    AWS_BUCKET_CLOUNDFRONT_PUBLIC_KEY_ID } = process.env
 
 const uploadImageFromLocalS3 = async ({
     file
@@ -15,7 +19,7 @@ const uploadImageFromLocalS3 = async ({
     try {
         const imageName = randomNameImage();
         const command = new PutObjectCommand({
-            Bucket: process.env.AWS_BUCKET_NAME,
+            Bucket: AWS_BUCKET_NAME,
             Key: imageName, // file.originalname || 'unknown',
             Body: file.buffer,
             ContentType: 'image/jpeg' // that is what you need?
@@ -25,14 +29,27 @@ const uploadImageFromLocalS3 = async ({
         const result = await s3.send(command)
         console.log(`result::::`, result)
 
-        const signedUrl = new GetObjectCommand({
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Key: imageName
+        // s3
+        // const signedUrl = new GetObjectCommand({
+        //     Bucket: AWS_BUCKET_NAME,
+        //     Key: imageName
+        // })
+        // const url = await getSignedUrl(s3, signedUrl, { expiresIn: 3600 })
+
+        // have cloundfront url export
+        const url = getSignedUrl({
+            url: `${urlImagePublic}/${imageName}`,
+            keyPairId: AWS_BUCKET_CLOUNDFRONT_PUBLIC_KEY_ID,
+            dateLessThan: new Date(Date.now() + 1000 * 60).toISOString(),
+            privateKey: AWS_BUCKET_CLOUNDFRONT_PRIVATE_KEY
         })
-        const url = await getSignedUrl(s3, signedUrl, { expiresIn: 3600 })
+
         console.log(`url::::`, url)
 
-        return url
+        return {
+            url,
+            result
+        }
         // return {
         //     image_null: result.secure_url,
         //     shopId: 8409,
