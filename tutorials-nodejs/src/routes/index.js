@@ -10,6 +10,7 @@ import cartRouter from "./cart/index.js";
 import commentRouter from "./comment/index.js"
 import notification from "./noti/index.js";
 import uploadImageRouter from "./upload/index.js";
+import profileRouter from "./profile/index.js";
 import { apiKey, permission } from "../auth/checkAuth.js";
 import { pushToLogDiscord } from "../middlewares/index.js";
 
@@ -25,6 +26,7 @@ router.use(apiKey);
 router.use(permission("0000"));
 
 router.use("/v1/api/checkout", checkoutRouter);
+router.use("/v1/api/profile", profileRouter);
 router.use("/v1/api/discount", discountRouter);
 router.use("/v1/api/inventory", inventoryRouter);
 router.use("/v1/api/cart", cartRouter);
