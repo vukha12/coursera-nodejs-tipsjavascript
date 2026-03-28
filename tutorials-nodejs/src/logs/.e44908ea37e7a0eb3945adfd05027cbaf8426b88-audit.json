@@ -1,0 +1,55 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "src\\logs\\.e44908ea37e7a0eb3945adfd05027cbaf8426b88-audit.json",
+    "files": [
+        {
+            "date": 1774702683634,
+            "name": "src\\logs\\application-$DATE%.error.log.2026-03-28-19-58",
+            "hash": "aaac3e688e890ee71f5549ef59b35fe28dab8861ff1970206c492892468121ef"
+        },
+        {
+            "date": 1774702815520,
+            "name": "src\\logs\\application-$DATE%.error.log.2026-03-28-20-00",
+            "hash": "b8e3d65ad2681e4d9cd7474ff4d01d367072661db465e3d5c4fd37da5bf70366"
+        },
+        {
+            "date": 1774703085608,
+            "name": "src\\logs\\application-$DATE%.error.log.2026-03-28-20-04",
+            "hash": "710198ff88bda0c80dd5a2f2d3e63a9b3b215316b5ee0675e18386dc35fdbeaf"
+        },
+        {
+            "date": 1774703149286,
+            "name": "src\\logs\\application-$DATE%.error.log.2026-03-28-20-05",
+            "hash": "38bf9d1cf1914985c1ed8401dfc7d66720e5b27308711fbe7f6a298f72ab3ae2"
+        },
+        {
+            "date": 1774740453809,
+            "name": "src\\logs\\application-$DATE%.error.log.2026-03-29-06-27",
+            "hash": "63e21fdec2e364215ed9b597f1b27abe478c8649299b8ddfa5f5751cce776bf7"
+        },
+        {
+            "date": 1774740592019,
+            "name": "src\\logs\\application-$DATE%.error.log.2026-03-29-06-29",
+            "hash": "ceb520c109570a39021da980a7d8864c57f6032e03e37ab7d6d9d76da1e57d2d"
+        },
+        {
+            "date": 1774740754488,
+            "name": "src\\logs\\application-$DATE%.error.log.2026-03-29-06-32",
+            "hash": "12391e31e29a51b6f221357b20b3ebf5152cc0eec20d2933aef3831f663f3268"
+        },
+        {
+            "date": 1774740858067,
+            "name": "src\\logs\\application-$DATE%.error.log.2026-03-29-06-34",
+            "hash": "61fd1e2fe52708924f53e2ecf46c6a1de035e7851d388917c4dcb4458f1e9a9e"
+        },
+        {
+            "date": 1774740934868,
+            "name": "src\\logs\\application-$DATE%.error.log.2026-03-29-06-35",
+            "hash": "f314ad8e9ec825357ec22f5cd0b3a171262394429140a507356cd4d10a3a67f1"
+        }
+    ],
+    "hashType": "sha256"
+}

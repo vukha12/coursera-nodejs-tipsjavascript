@@ -11,10 +11,14 @@ const ReasonStatusCode = {
   CONFLICT: "Conflict error",
 };
 
+import myloggerLog from "../loggers/mylogger.log.js";
+
 class ErrorResponse extends Error {
   constructor(message, status) {
     super(message);
     this.status = status;
+
+    myloggerLog.error(this.message, ['/api/v1/login', 'vv33344', { error: 'Bad request error' }]);
   }
 }
 
