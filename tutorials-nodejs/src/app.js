@@ -5,8 +5,8 @@ import morgan from "morgan";
 import helmet from "helmet";
 import compression from "compression";
 import router from "./routes/index.js";
-import inventoryTest from "./test/inventory.test.js";
-import productTest from "./test/product.test.js";
+import { v4 as uuidv4 } from 'uuid';
+import myLogger from "./loggers/mylogger.log.js";
 
 const app = express();
 
@@ -21,8 +21,21 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  const requestId = req.headers['x-request-id'];
+  req.requestId = requestId ? requestId : uuidv4();
+  myLogger.log(`inpurt params::${req.method}::`, [
+    req.path,
+    { requestId: requestId },
+    req.method === 'POST' ? req.body : req.query
+  ])
+
+  next();
+})
+
+
 // test pub/sub redis
-productTest.purchaseProduct('product:001', 10);
+// productTest.purchaseProduct('product:001', 10);
 
 // init db
 import mongoose from "./dbs/init.mongodb.js";
@@ -39,6 +52,16 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
   const statusCode = error.status || 500;
+
+  const resMessage = `${error.status} - ${Date.now() - error.now}ms - Response: ${JSON.stringify(error)}`
+
+  myLogger.error(resMessage, [
+    req.path,
+    { requestId: req.requestOd },
+    {
+      message: error.message
+    }
+  ])
   return res.status(statusCode).json({
     status: "error",
     code: statusCode,

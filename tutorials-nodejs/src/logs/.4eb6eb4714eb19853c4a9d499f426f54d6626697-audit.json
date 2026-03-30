@@ -1,0 +1,60 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "src\\logs\\.4eb6eb4714eb19853c4a9d499f426f54d6626697-audit.json",
+    "files": [
+        {
+            "date": 1774858010354,
+            "name": "src\\logs\\application-2026-03-30-15-06.info.log",
+            "hash": "62093e41f374befc7823b56bb27bd343679fa6330080ac6b66a2d27cba953d6e"
+        },
+        {
+            "date": 1774858334915,
+            "name": "src\\logs\\application-2026-03-30-15-12.info.log",
+            "hash": "30b9f416267ce0385cc65845f2b980d0586906dd5fbb81971d5b629616727969"
+        },
+        {
+            "date": 1774858462688,
+            "name": "src\\logs\\application-2026-03-30-15-14.info.log",
+            "hash": "50b40dc83a1701b48e76794b4f5b62afbdb27822eaa4a559ff0cd51e2090d3e6"
+        },
+        {
+            "date": 1774858991782,
+            "name": "src\\logs\\application-2026-03-30-15-23.info.log",
+            "hash": "f30fa4998ddb22fcdccb15f7eef6fdd25a06c50c5ed5d3a2f1d5b02e6317227f"
+        },
+        {
+            "date": 1774859149444,
+            "name": "src\\logs\\application-2026-03-30-15-25.info.log",
+            "hash": "f2e0d7c2a343bea8ce77b464b4791982d977e9f8fb5b8e22fd3b7612d48c7d65"
+        },
+        {
+            "date": 1774859204826,
+            "name": "src\\logs\\application-2026-03-30-15-26.info.log",
+            "hash": "c7f1e87cd1bc21be0d92d74bf53b1066b617c9782f397e2246d08f6c8251faae"
+        },
+        {
+            "date": 1774859280645,
+            "name": "src\\logs\\application-2026-03-30-15-28.info.log",
+            "hash": "0aec7b8ae0cb2cab44342214ed4b0563290b5c7091e6aa380d9374dc7e0dab05"
+        },
+        {
+            "date": 1774859596850,
+            "name": "src\\logs\\application-2026-03-30-15-33.info.log",
+            "hash": "06b7156704fbb8ce5eb6f44e5e4e07a9b42468c6fc348e0ad24d32d1087cd65b"
+        },
+        {
+            "date": 1774859720487,
+            "name": "src\\logs\\application-2026-03-30-15-35.info.log",
+            "hash": "542087b33cb87869c529484896c989d6c7298833acc483d15b8e739c38aa91be"
+        },
+        {
+            "date": 1774859785097,
+            "name": "src\\logs\\application-2026-03-30-15-36.info.log",
+            "hash": "a9cc7783cadc43475c36197083dd54c364861bbb0bf135c756a8dbe546cf7186"
+        }
+    ],
+    "hashType": "sha256"
+}

@@ -1,0 +1,2 @@
+2026-03-30 15:36:25::info::/v1/api/product::2a022193-bd3e-4247-ab6e-c3801b6207df::inpurt params::POST::::{"product_name":"Nồi chiên không dầu Sunhouse","product_description":"Mỏng gọn nhẹ","product_type":"Electronic","product_thumb":"product_thumb","product_quantity":2,"product_price":120,"product_attributes":{"brand":"Levi's","size":"L","material":"Denim"}}
+2026-03-30 15:36:25::error::/v1/api/product::6d31cbe5-f5cd-4fe6-80ab-9781c52e8cb6::undefined - NaNms - Response: {"name":"JsonWebTokenError","message":"invalid signature"}::{"message":"invalid signature"}

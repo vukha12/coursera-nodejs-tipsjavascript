@@ -19,3 +19,7 @@ bin-release/
 
 node_modules
 .env
+
+logs/
+*.log
+*.log.gz

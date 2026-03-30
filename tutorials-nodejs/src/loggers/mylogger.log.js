@@ -21,7 +21,7 @@ class MyLogger {
                 new transports.Console(),
                 new transports.DailyRotateFile({
                     dirname: 'src/logs',
-                    filename: 'application-$DATE%.info.log',
+                    filename: 'application-%DATE%.info.log',
                     datePattern: 'YYYY-MM-DD-HH-mm',
                     zippedArchive: true, // true: backup log zipped archive
                     maxSize: '1m', // dung luong file log
@@ -34,7 +34,7 @@ class MyLogger {
                 }),
                 new transports.DailyRotateFile({
                     dirname: 'src/logs',
-                    filename: 'application-$DATE%.error.log',
+                    filename: 'application-%DATE%.error.log',
                     datePattern: 'YYYY-MM-DD-HH-mm',
                     zippedArchive: true, // true: backup log zipped archive
                     maxSize: '1m', // dung luong file log

@@ -13,13 +13,13 @@ import uploadImageRouter from "./upload/index.js";
 import profileRouter from "./profile/index.js";
 import rbacRouter from "./rbac/index.js";
 import { apiKey, permission } from "../auth/checkAuth.js";
-import { pushToLogDiscord } from "../middlewares/index.js";
+// import { pushToLogDiscord } from "../middlewares/index.js";
 
 
 const router = express.Router();
 
 // add log to discord
-router.use(pushToLogDiscord)
+// router.use(pushToLogDiscord)
 
 // check apiKey
 router.use(apiKey);
