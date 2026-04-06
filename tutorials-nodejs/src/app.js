@@ -39,7 +39,9 @@ app.use((req, res, next) => {
 
 // init db
 import mongoose from "./dbs/init.mongodb.js";
+import { initRedis } from "./dbs/init.redis.js";
 
+initRedis();
 // init routes
 app.use("/", router);
 
