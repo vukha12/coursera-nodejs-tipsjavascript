@@ -7,6 +7,8 @@ const router = express.Router();
 
 
 router.get("/search/:keySearch", asyncHandler(productController.findLishSearchProduct));
+router.get("/sku/select_variation", asyncHandler(productController.findOneSku));
+router.get("/sku/get_spu_info", asyncHandler(productController.findOneSpu));
 router.get("", asyncHandler(productController.findAllProducts));
 router.get("/:product_id", asyncHandler(productController.findProductById));
 
@@ -15,6 +17,7 @@ router.use(authenticationV2);
 
 // CRUD product
 router.post("", asyncHandler(productController.createProduct));
+router.post("/spu/new", asyncHandler(productController.createSpu));
 router.patch("/:productId", asyncHandler(productController.updateProduct));
 router.put("/publish/:id", asyncHandler(productController.publishProductByShop));
 router.put("/unpublish/:id", asyncHandler(productController.unPublishProductByShop));

@@ -2,8 +2,61 @@
 
 import ProductService from "../services/product.service.xxx.js";
 import { SuccessResponse } from "../core/success.response.js";
+import { newSpu, oneSpu } from "../services/spu.service.js";
+import { oneSku } from "../services/sku.service.js";
 
 class ProductController {
+
+    // SPU, SKU
+    findOneSpu = async (req, res, next) => {
+        try {
+            const { product_id } = req.query
+
+            new SuccessResponse({
+                message: "get one spu",
+                metadata: await oneSpu({ spu_id: product_id })
+            }).send(res);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    findOneSku = async (req, res, next) => {
+        try {
+            const { sku_id, product_id } = req.query
+
+            new SuccessResponse({
+                message: "get sku one",
+                metadata: await oneSku({ sku_id, product_id })
+            }).send(res);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    /**
+     * @desc Create new SPU
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    createSpu = async (req, res, next) => {
+        try {
+            const spu = await newSpu({
+                ...req.body,
+                product_shop: req.user.userId
+            })
+            new SuccessResponse({
+                message: "Create new SPU success!",
+                metadata: spu
+            }).send(res);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // END SPU, SKU
+
     createProduct = async (req, res, next) => {
         new SuccessResponse({
             message: 'Create new Product success!',

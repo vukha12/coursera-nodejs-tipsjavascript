@@ -41,10 +41,15 @@ const updateNestedObjectParer = obj => {
   return final
 }
 
+const randomProductId = () => {
+  return Math.floor(Math.random() * 899999 + 1000000)
+}
+
 export {
   getInfoData,
   getSelectData,
   unGetSelectData,
   removeUndefinedObject,
-  updateNestedObjectParer
+  updateNestedObjectParer,
+  randomProductId
 }
